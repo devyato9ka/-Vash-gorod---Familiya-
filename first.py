@@ -2,15 +2,23 @@
 import pygame
 import random
 
+
 # основные данные
 pygame.init()
+pygame.mouse.set_visible(False)
 width = 400
-height = 550
+height = 560
 screen = pygame.display.set_mode([width, height])
 pygame.display.set_caption("2048")
 timer = pygame.time.Clock()
 fps = 60
+levell = 0
 font = pygame.font.Font('freesansbold.ttf', 24)
+music = pygame.mixer.music.load('song.mp3')
+crash = pygame.mixer.Sound("soundeffect.mp3")
+
+pygame.mixer.music.play(-1, 0.0)
+
 
 # список цветов, взято из интернета
 colors = {0: (204, 192, 179),
@@ -53,10 +61,10 @@ def draw_over():
 
 
 # ход игрока
-def turn(direc, board):
+def turn(direct, board):
     global score
     merged = [[False for _ in range(4)] for _ in range(4)]
-    if direc == 'UP':
+    if direct == 'UP':
         for i in range(4):
             for j in range(4):
                 shift = 0
@@ -74,7 +82,7 @@ def turn(direc, board):
                         board[i - shift][j] = 0
                         merged[i - shift - 1][j] = True
 
-    elif direc == 'DOWN':
+    elif direct == 'DOWN':
         for i in range(3):
             for j in range(4):
                 shift = 0
@@ -92,7 +100,7 @@ def turn(direc, board):
                         board[2 - i + shift][j] = 0
                         merged[3 - i + shift][j] = True
 
-    elif direc == 'LEFT':
+    elif direct == 'LEFT':
         for i in range(4):
             for j in range(4):
                 shift = 0
@@ -109,7 +117,7 @@ def turn(direc, board):
                     board[i][j - shift] = 0
                     merged[i][j - shift - 1] = True
 
-    elif direc == 'RIGHT':
+    elif direct == 'RIGHT':
         for i in range(4):
             for j in range(4):
                 shift = 0
@@ -153,9 +161,11 @@ def bg_text():
     score_text = font.render(f"Score: {score}", True, "black")
     high_score_text = font.render(f"High Score: {high_score}", True, "black")
     max_block_text = font.render(f"Max Block: {max_block}", True, "black")
+    levell_text = font.render(f"Level: {levell}", True, "black")
     screen.blit(score_text, (10, 410))
     screen.blit(high_score_text, (10, 450))
     screen.blit(max_block_text, (10, 490))
+    screen.blit(levell_text, (10, 530))
     pass
 
 
@@ -224,6 +234,7 @@ while run:
             elif event.key == pygame.K_RIGHT:
                 directionn = "RIGHT"
             elif event.key == pygame.K_SPACE:
+                pygame.mixer.music.play(-1, 0.0)
                 datab = [[0 for _ in range(4)] for _ in range(4)]
                 new_spawn = True
                 init_count = 0
@@ -232,17 +243,28 @@ while run:
                 game_over = False
             if game_over:
                 if event.key == pygame.K_SPACE:
+                    pygame.mixer.music.play(-1, 0.0)
                     datab = [[0 for _ in range(4)] for _ in range(4)]
                     new_spawn = True
                     init_count = 0
                     score = 0
                     directionn = ""
                     game_over = False
+
     if score > high_score:
         high_score = score
     for i in range(4):
         for j in range(4):
-            if datab[i][j] >= max_block:
+            if datab[i][j] > max_block:
                 max_block = datab[i][j]
+                levell += 1
+                pygame.mixer.music.play(-1, 0.0)
+                datab = [[0 for _ in range(4)] for _ in range(4)]
+                new_spawn = True
+                init_count = 0
+                score = 0
+                directionn = ""
+                game_over = False
+                pygame.mixer.Sound.play(crash)
     pygame.display.flip()
 pygame.quit()
