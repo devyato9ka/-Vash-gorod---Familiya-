@@ -9,14 +9,13 @@ pygame.mouse.set_visible(False)
 width = 400
 height = 560
 screen = pygame.display.set_mode([width, height])
-pygame.display.set_caption("2048")
+pygame.display.set_caption("2048-")
 timer = pygame.time.Clock()
 fps = 60
 levell = 0
 font = pygame.font.Font('freesansbold.ttf', 24)
 music = pygame.mixer.music.load('song.mp3')
 crash = pygame.mixer.Sound("soundeffect.mp3")
-
 pygame.mixer.music.play(-1, 0.0)
 
 
@@ -42,10 +41,13 @@ colors = {0: (204, 192, 179),
 datab = [[0 for _ in range(4)] for _ in range(4)]
 game_over = False
 new_spawn = True
+cheats = False
 init_count = 0
 score = 0
-init_high = 0
-init_block = 0
+with open('high_score', 'r') as file:
+    init_high = int(file.readline())
+with open('init_block', 'r') as file:
+    init_block = int(file.readline())
 directionn = ""
 high_score = init_high
 max_block = init_block
@@ -162,10 +164,12 @@ def bg_text():
     high_score_text = font.render(f"High Score: {high_score}", True, "black")
     max_block_text = font.render(f"Max Block: {max_block}", True, "black")
     levell_text = font.render(f"Level: {levell}", True, "black")
+    cheat_status = font.render(f"Cheats: {cheats}", True, "black")
     screen.blit(score_text, (10, 410))
     screen.blit(high_score_text, (10, 450))
     screen.blit(max_block_text, (10, 490))
     screen.blit(levell_text, (10, 530))
+    screen.blit(cheat_status, (210, 530))
     pass
 
 
@@ -194,6 +198,7 @@ def pieces_draw(board):
 
 # основной код
 run = True
+do = True
 while run:
     timer.tick(fps)
     screen.fill("gray")
@@ -208,14 +213,14 @@ while run:
         directionn = ""
         new_spawn = True
     if game_over:
-        draw_over()
         # запись рекордов
-        if high_score >= init_high:
+        draw_over()
+        if high_score >= init_high and not cheats:
             file = open("high_score", "w")
             file.write(f'{high_score}')
             file.close()
             init_high = high_score
-        if max_block >= init_block:
+        if max_block >= init_block and not cheats:
             file = open("init_block", "w")
             file.write(f'{max_block}')
             file.close()
@@ -236,6 +241,138 @@ while run:
             elif event.key == pygame.K_SPACE:
                 pygame.mixer.music.play(-1, 0.0)
                 datab = [[0 for _ in range(4)] for _ in range(4)]
+                new_spawn = True
+                init_count = 0
+                score = 0
+                directionn = ""
+                game_over = False
+            if event.key == pygame.K_KP_ENTER:
+                cheats = True
+                high_score = 999999999
+                max_block = 999999999
+                pygame.mixer.music.play(-1, 0.0)
+                datab = [[16777216 for _ in range(4)] for _ in range(4)]
+                new_spawn = True
+                init_count = 0
+                score = 0
+                directionn = ""
+                game_over = False
+            if event.key == pygame.K_1:
+                cheats = True
+                high_score = 999999999
+                max_block = 999999999
+                pygame.mixer.music.play(-1, 0.0)
+                datab = [[2 for _ in range(4)] for _ in range(4)]
+                new_spawn = True
+                init_count = 0
+                score = 0
+                directionn = ""
+                game_over = False
+            if event.key == pygame.K_2:
+                cheats = True
+                high_score = 999999999
+                max_block = 999999999
+                pygame.mixer.music.play(-1, 0.0)
+                datab = [[4 for _ in range(4)] for _ in range(4)]
+                new_spawn = True
+                init_count = 0
+                score = 0
+                directionn = ""
+                game_over = False
+            if event.key == pygame.K_3:
+                cheats = True
+                high_score = 999999999
+                max_block = 999999999
+                pygame.mixer.music.play(-1, 0.0)
+                datab = [[8 for _ in range(4)] for _ in range(4)]
+                new_spawn = True
+                init_count = 0
+                score = 0
+                directionn = ""
+                game_over = False
+            if event.key == pygame.K_4:
+                cheats = True
+                high_score = 999999999
+                max_block = 999999999
+                pygame.mixer.music.play(-1, 0.0)
+                datab = [[16 for _ in range(4)] for _ in range(4)]
+                new_spawn = True
+                init_count = 0
+                score = 0
+                directionn = ""
+                game_over = False
+            if event.key == pygame.K_5:
+                cheats = True
+                high_score = 999999999
+                max_block = 999999999
+                pygame.mixer.music.play(-1, 0.0)
+                datab = [[32 for _ in range(4)] for _ in range(4)]
+                new_spawn = True
+                init_count = 0
+                score = 0
+                directionn = ""
+                game_over = False
+            if event.key == pygame.K_6:
+                cheats = True
+                high_score = 999999999
+                max_block = 999999999
+                pygame.mixer.music.play(-1, 0.0)
+                datab = [[64 for _ in range(4)] for _ in range(4)]
+                new_spawn = True
+                init_count = 0
+                score = 0
+                directionn = ""
+                game_over = False
+            if event.key == pygame.K_7:
+                cheats = True
+                high_score = 999999999
+                max_block = 999999999
+                pygame.mixer.music.play(-1, 0.0)
+                datab = [[128 for _ in range(4)] for _ in range(4)]
+                new_spawn = True
+                init_count = 0
+                score = 0
+                directionn = ""
+                game_over = False
+            if event.key == pygame.K_8:
+                cheats = True
+                high_score = 999999999
+                max_block = 999999999
+                pygame.mixer.music.play(-1, 0.0)
+                datab = [[256 for _ in range(4)] for _ in range(4)]
+                new_spawn = True
+                init_count = 0
+                score = 0
+                directionn = ""
+                game_over = False
+            if event.key == pygame.K_9:
+                cheats = True
+                high_score = 999999999
+                max_block = 999999999
+                pygame.mixer.music.play(-1, 0.0)
+                datab = [[512 for _ in range(4)] for _ in range(4)]
+                new_spawn = True
+                init_count = 0
+                score = 0
+                directionn = ""
+                game_over = False
+            if event.key == pygame.K_0:
+                cheats = True
+                high_score = 999999999
+                max_block = 999999999
+                pygame.mixer.music.play(-1, 0.0)
+                datab = [[1024 for _ in range(4)] for _ in range(4)]
+                new_spawn = True
+                init_count = 0
+                score = 0
+                directionn = ""
+                game_over = False
+            if event.key == pygame.K_BACKSPACE:
+                cheats = True
+                high_score = 999999999
+                max_block = 999999999
+                pygame.mixer.music.play(-1, 0.0)
+                datab = [[16777216 for _ in range(4)] for _ in range(4)]
                 new_spawn = True
                 init_count = 0
                 score = 0
